@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>ticTacToe.GG</title>
+
+		<link rel="stylesheet" href="style.css" />
+
+		<script src="script.js" defer></script>
+	</head>
+	<body>
+		<!-- Start Screen -->
+		<div id="startScreen" class="screen flexCol">
+			<div id="startTitle" class="flexRow">Tic-Tac-Toe</div>
+			<div id="startPlayerSelect" class="flexCol">
+				<div id="startPlayerOne" class="flexCol">
+					<span id="startPlayerOneLabel">Player 1</span>
+					<input id="startPlayerOneTextBox" type="text" placeholder="Player 1">
+					<span id="startPlayerOneSymbol">X</span>
+				</div>
+				<div id="startPlayerTwo" class="flexCol">
+					<span id="startPlayerTwoLabel">Player 2 </span>
+					<input id="startPlayerTwoTextBox" type="text" placeholder="Player 2">
+					<span id="startPlayerTwoSymbol">O</span>
+				</div>
+				<button id="startPlayGame">Play Game</button>				
+			</div>
+			<div id="startFooter" class="flexRow">A bru.GG Production</div>
+		</div>
+
+		<!-- Content Screen -->
+		<div id="gameScreen" class="hidden screen">
+			<div id="gameScoreContainer" class="flexRow ">
+				<div id="playerOneScore" class="flexCol">
+					<span id="playerOneName">Name</span>
+					<span id="playerOneScore">Score</span>
+				</div>
+				<div id="playertwoScore" class="flexCol">
+					<span id="playerTwoName">Name</span>
+					<span id="playerTwoScore">Score</span>
+				</div>
+			</div>
+			<div id="gameFieldContainer" class="flexRow">
+				<div id=gameField>
+					<div id="gameTile11" class="gameTile" data-tile="11">(1,1)</div>
+					<div id="gameTile12" class="gameTile" data-tile="12">(1,2)</div>
+					<div id="gameTile13" class="gameTile" data-tile="13">(1,3)</div>
+					<div id="gameTile21" class="gameTile" data-tile="21">(2,1)</div>
+					<div id="gameTile22" class="gameTile" data-tile="22">(2,2)</div>
+					<div id="gameTile23" class="gameTile" data-tile="23">(2,3)</div>
+					<div id="gameTile31" class="gameTile" data-tile="31">(3,1)</div>
+					<div id="gameTile32" class="gameTile" data-tile="32">(1,2)</div>
+					<div id="gameTile33" class="gameTile" data-tile="33">(3,3)</div>
+
+				</div>
+			</div>	
+			<div id="gameFooter" class="flexCol">
+				<button id="gameRestart">Restart</button>
+				<button id="gameMainMenu">Main Menu</button>
+			</div>
+		</div>
+
+		<!-- Game Over Screen -->
+		<div id="gameOverScreen" class="hidden screen flexCol">
+			<span id="gameOverText">Game Over</span>
+			<div id="gameOverOptions">
+				<button id="gameOverPlayAgain">Play Again</button>
+				<button id="gameOverMainMenu">Main Menu</button>
+			</div>
+		</div>
+	</body>
+</html>

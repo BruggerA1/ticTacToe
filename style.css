@@ -1,0 +1,94 @@
+/* Global Styles */
+/* 
+:root {
+} 
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+}
+
+.flexRow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flexCol {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Screen Styles */
+.screen {
+	height: 100vh;
+	/* temp */
+	border: dashed 1px;
+}
+
+.hidden {
+	display: none !important;
+}
+
+/* Title Screen */
+#startTitle {
+	height: 10vh;
+}
+
+#startPlayerSelect {
+	height: 80vh;
+	justify-content: space-around;
+}
+
+#startPlayerOne, #startPlayerTwo {
+	border: solid;
+	height: 20vh;
+	width: 40vw;
+	justify-content: space-around;
+}
+
+
+#startFooter {
+	height: 10vh;
+}
+/* Game Screen */
+#gameScoreContainer {
+	height: 10vh;
+}
+
+#gameField {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 4px;
+	background-color: black;
+	width: 50vw;
+	height: 50vh;
+	border: solid 1px;
+}
+
+.gameTile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: white;
+}
+
+.gameTile:hover {
+	border: red 2px solid;
+}
+
+#gameFieldContainer {
+	border: solid 1px;
+	height: 80vh;
+}
+
+#gameFooter {
+	border: solid 1px;
+	height: 10vh;
+}
