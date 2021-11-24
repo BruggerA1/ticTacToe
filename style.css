@@ -52,6 +52,15 @@
 	justify-content: space-around;
 }
 
+#startPlayerOneTextBox, #startPlayerTwoTextBox {
+	width: 60%;
+	height: 20%;
+	text-align: center;
+}
+
+#gameScoreContainer {
+	justify-content: space-around;
+}
 
 #startFooter {
 	height: 10vh;
@@ -63,24 +72,27 @@
 
 #gameField {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, 20vw);
 	grid-gap: 4px;
 	background-color: black;
-	width: 50vw;
-	height: 50vh;
-	border: solid 1px;
+	width: 60vw;
+	height: 60vmin;
 }
+
 
 .gameTile {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 	background-color: white;
+	text-align: center;
+	overflow: hidden;
+	height: 20vmin;
+	font-size: 20vmin !important;
+	line-height: 20vmin !important;
 }
 
+
 .gameTile:hover {
-	border: red 2px solid;
+	border: rgba(255,0,0,0.6) 4px solid;
 }
 
 #gameFieldContainer {
@@ -90,5 +102,15 @@
 
 #gameFooter {
 	border: solid 1px;
+	height: 10vh;
+	justify-content: space-evenly;
+}
+
+#gameOverScreen {
+	justify-content: space-evenly;
+}
+
+#gameOverOptions {
+	justify-content: space-around;
 	height: 10vh;
 }

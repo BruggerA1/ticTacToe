@@ -1,43 +1,47 @@
 const displayController = (() => {
 	const views = (() => {
-		const startScreen = document.getElementById('startScreen');
-		const gameScreen = document.getElementById('gameScreen');
-		const gameOverScreen = document.getElementById('gameOverScreen');
-
+		// Define Variables
+		const startView = document.getElementById('startScreen');
+		const gameView = document.getElementById('gameScreen');
+		const gameOverView = document.getElementById('gameOverScreen');	
+		// Define Functions
 		const toggleView = view => {
 			switch (view) {
-				case startScreen:
-					startScreen.classList.remove("hidden");
-					gameScreen.classList.add("hidden");
-					gameOverScreen.classList.add("hidden");
+				case startView:
+					startView.classList.remove("hidden");
+					gameView.classList.add("hidden");
+					gameOverView.classList.add("hidden");
 					break;
-				case gameScreen:
-					startScreen.classList.add("hidden");
-					gameScreen.classList.remove("hidden");
-					gameOverScreen.classList.add("hidden");
+				case gameView:
+					startView.classList.add("hidden");
+					gameView.classList.remove("hidden");
+					gameOverView.classList.add("hidden");
 					break;
-				case gameOverScreen:
-					startScreen.classList.add("hidden");
-					gameScreen.classList.add("hidden");
-					gameOverScreen.classList.remove("hidden");
+				case gameOverView:
+					startView.classList.add("hidden");
+					gameView.classList.add("hidden");
+					gameOverView.classList.remove("hidden");
 					break;
 			};
 		};
 
-		return {
-			toggleView
+		return {			
+			toggleView,
 		};
 	})();
 	const buttons = (() => {
+		// Define Variables
+		// Start View
 		const startPlayGame = document.getElementById('startPlayGame');
-
+		// Game View
 		const gameRestart = document.getElementById('gameRestart');
 		const gameMainMenu = document.getElementById('gameMainMenu');
-
+		// GameOver View
 		const gameOverPlayAgain = document.getElementById('gameOverPlayAgain');
 		const gameOverMainMenu = document.getElementById('gameOverMainMenu');
 		
-		(() => {
+		// Initialization
+		const init = (() => {
 			startPlayGame.addEventListener('click', () => displayController.views.toggleView(gameScreen));
 
 			gameRestart.addEventListener('click', () => displayController.views.toggleView(gameScreen));
@@ -46,15 +50,43 @@ const displayController = (() => {
 			gameOverPlayAgain.addEventListener('click', () => displayController.views.toggleView(gameScreen));
 			gameOverMainMenu.addEventListener('click', () => displayController.views.toggleView(startScreen))
 		})();
-		
+
+		return {
+			init,
+		};
 	})();
 	return {
 		views,
-		buttons
+		buttons,
 	};
 })();
 
-const GameController = (() => {
+const gameController = (() => {
+	// Define Variables
+	const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
+	const boardMatrix = [];
+
+	// Initialization
+	const init = (() => {
+		while (fieldTiles.length > 0) {
+			boardMatrix.push(fieldTiles.splice(0,3));
+		};
+	})();
+
+	// Define Functions
+	const markX = (row, col) => {
+		boardMatrix[row-1][col-1].innerText = 'close';
+		return 'X';
+	};
+	const markO = (row, col) => {
+		boardMatrix[row-1][col-1].innerText = 'circle';
+		return 'O';
+	}
+	return {
+		init,
+		markX,
+		markO,
+	};
 })();
 
 const player = (symbol, name) => {

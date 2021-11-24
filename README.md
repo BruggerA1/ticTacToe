@@ -6,3 +6,12 @@
 * GameController
 * Win Conditions
 * AI
+
+#
+#
+	- interface skeleton drafted
+	- boardMatrix built
+#
+	- start game logic
+#
+#
