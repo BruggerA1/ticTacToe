@@ -1,10 +1,31 @@
-const displayController = (() => {
+const player = (name) => {
+	let score = 0;
+	const getScore = () => score;
+	const setScore = newScore => score = newScore;
+	const addPointToScore = () => {
+		score++;
+		display.playerFields.refresh();
+		return score;
+	};
+	const getName = () => name;
+	const setName = newName => name = newName;
+
+	return {
+		getScore,
+		setScore,
+		addPointToScore,
+		getName,
+		setName,
+	};
+};
+
+const display = (() => {
+
 	const views = (() => {
-		// Define Variables
 		const startView = document.getElementById('startScreen');
 		const gameView = document.getElementById('gameScreen');
-		const gameOverView = document.getElementById('gameOverScreen');	
-		// Define Functions
+		const gameOverView = document.getElementById('gameOverScreen');
+
 		const toggleView = view => {
 			switch (view) {
 				case startView:
@@ -25,87 +46,164 @@ const displayController = (() => {
 			};
 		};
 
-		return {			
+		return {
 			toggleView,
-		};
+		}
 	})();
+
 	const buttons = (() => {
-		// Define Variables
-		// Start View
 		const startPlayGame = document.getElementById('startPlayGame');
-		// Game View
 		const gameRestart = document.getElementById('gameRestart');
 		const gameMainMenu = document.getElementById('gameMainMenu');
-		// GameOver View
 		const gameOverPlayAgain = document.getElementById('gameOverPlayAgain');
 		const gameOverMainMenu = document.getElementById('gameOverMainMenu');
-		
-		// Initialization
+
 		const init = (() => {
-			startPlayGame.addEventListener('click', () => displayController.views.toggleView(gameScreen));
+			startPlayGame.addEventListener('click', () => {
+				gameController.newGame();
+			});
+			gameRestart.addEventListener('click', () => {
 
-			gameRestart.addEventListener('click', () => displayController.views.toggleView(gameScreen));
-			gameMainMenu.addEventListener('click', () => displayController.views.toggleView(startScreen));
+			});
+			gameMainMenu.addEventListener('click', () => {
 
-			gameOverPlayAgain.addEventListener('click', () => displayController.views.toggleView(gameScreen));
-			gameOverMainMenu.addEventListener('click', () => displayController.views.toggleView(startScreen))
+			});
+			gameOverPlayAgain.addEventListener('click', () => {
+
+			});
+			gameOverMainMenu.addEventListener('click', () => {
+
+			});
 		})();
 
 		return {
 			init,
 		};
 	})();
-	return {
-		views,
-		buttons,
-	};
-})();
 
-const gameController = (() => {
-	// Define Variables
-	const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
-	const boardMatrix = [];
+	const playerFields = (() => {
+		const playerOneTextBox = document.getElementById('startPlayerOneTextBox');
+		const playerOneName = document.getElementById('playerOneName');
+		const playerOneScore = document.getElementById('playerOneScore');
 
-	// Initialization
-	const init = (() => {
-		while (fieldTiles.length > 0) {
-			boardMatrix.push(fieldTiles.splice(0,3));
+		const playerTwoTextBox = document.getElementById('startPlayerTwoTextBox');
+		const playerTwoName = document.getElementById('playerTwoName');
+		const playerTwoScore = document.getElementById('playerTwoScore');
+
+		const refresh = (() => {
+			playerOne.setName(playerOneTextBox.value);
+			playerOneName.innerText = playerOne.getName();
+			playerOneScore.innerText = playerOne.getScore();
+
+			playerTwo.setName(playerTwoTextBox.value);
+			playerTwoName.innerText = playerTwo.getName();
+			playerTwoScore.innerText = playerTwo.getScore();
+		});
+
+		return {
+			refresh,
 		};
 	})();
 
-	// Define Functions
-	const markX = (row, col) => {
-		boardMatrix[row-1][col-1].innerText = 'close';
-		return 'X';
-	};
-	const markO = (row, col) => {
-		boardMatrix[row-1][col-1].innerText = 'circle';
-		return 'O';
-	}
 	return {
-		init,
-		markX,
-		markO,
-	};
+		views,
+		buttons,
+		playerFields,
+	}
 })();
 
-const player = (symbol, name) => {
-	let score = 0;
-	const getScore = () => score;
-	const addPoint = () => {
-		score++
-		return score
+const gameController = (() => {
+	const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
+	const boardMatrix = [];
+	const gameBoard = [
+		['', '', ''],
+		['', '', ''],
+		['', '', '']
+	];
+
+	let turnIndex = 0;
+	const playerTurn = (turnIndex) => {
+		return (turnIndex % 2 == 0) ? 'X' : 'O';
 	};
-	const getSymbol = () => symbol;
-	const getName = () => name;
+
+	const markSymbol = (symbol, row, col) => {
+		boardMatrix[row][col].innerText = (symbol == 'X') ? 'close' : 'circle';
+		gameBoard[row][col] = (symbol == 'X') ? 'X' : 'O';
+		gameController.turnIndex++;
+	};
+
+	const checkBoard = (value) => {
+		// Rows
+		for (let i = 0; i < 3; i++) {
+			if (gameBoard[i][0] == value)
+				if (gameBoard[i][1] == value)
+					if (gameBoard[i][2] == value) return true;
+		};
+
+		// Columns
+		for (let i = 0; i < 3; i++) {
+			if (gameBoard[0][i] == value)
+				if (gameBoard[1][i] == value)
+					if (gameBoard[2][i] == value) return true;
+		};
+
+		// First Diagonal
+		if (gameBoard[0][0] == value)
+			if (gameBoard[1][1] == value)
+				if (gameBoard[2][2] == value) return true;
+
+		// Second Diagonal
+		if (gameBoard[0][2] == value)
+			if (gameBoard[1][1] == value)
+				if (gameBoard[2][0] == value) return true;
+
+		// No Win Condition		
+		return false;
+	};
+
+	const newGame = () => {
+		playerOne.setScore(0);
+		playerTwo.setScore(0);
+		display.playerFields.refresh();
+		display.views.toggleView(gameScreen);
+	};
+
+	const markTile = ((e) => {
+		let whosTurn = gameController.playerTurn(gameController.turnIndex);
+		let tileArray = e.target.id.split('');
+		tileArray.forEach(x => parseInt(x));
+
+		if (e.target.innerText == '') {
+			(whosTurn == 'X') ? gameController.markSymbol('X', tileArray[0], tileArray[1]) : gameController.markSymbol('O', tileArray[0], tileArray[1]);
+
+			if (gameController.checkBoard(whosTurn) == true) {
+				(whosTurn == 'X') ? playerOne.addPointToScore() : playerTwo.addPointToScore();
+			};
+
+		};
+
+	});
+
+	const init = (() => {
+		fieldTiles.forEach(tile => tile.addEventListener('click', (e) => gameController.markTile(e)));
+		while (fieldTiles.length > 0) {
+			boardMatrix.push(fieldTiles.splice(0, 3));
+		};
+	})();
+
 	return {
-		getScore,
-		addPoint,
-		getSymbol,
-		getName,
-	};
-};
+		gameBoard,
+		markSymbol,
+		checkBoard,
+		init,
+		newGame,
+		turnIndex,
+		playerTurn,
+		markTile,
+	}
 
-const playerOne = player('X', 'Brugger');
-const playerTwo = player('O', 'Winston');
+})();
 
+
+const playerOne = player('');
+const playerTwo = player('');
