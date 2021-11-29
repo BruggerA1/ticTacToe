@@ -3,15 +3,13 @@
 #### By Brugger Anderson - The Odin Project
 
 # To DO:
-* GameController
-* Win Conditions
 * AI
 
 #
 #
-	- interface skeleton drafted
-	- boardMatrix built
+	- game logic complete
 #
-	- start game logic
+	- add round/game won modal.
+	- finish GUI.
 #
 #

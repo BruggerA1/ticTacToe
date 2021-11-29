@@ -20,11 +20,10 @@ const player = (name) => {
 };
 
 const display = (() => {
-
 	const views = (() => {
-		const startView = document.getElementById('startScreen');
-		const gameView = document.getElementById('gameScreen');
-		const gameOverView = document.getElementById('gameOverScreen');
+		const startView = document.getElementById('startView');
+		const gameView = document.getElementById('gameView');
+		const gameOverView = document.getElementById('gameOverView');
 
 		const toggleView = view => {
 			switch (view) {
@@ -48,7 +47,8 @@ const display = (() => {
 
 		return {
 			toggleView,
-		}
+		};
+		
 	})();
 
 	const buttons = (() => {
@@ -63,10 +63,11 @@ const display = (() => {
 				game.logic.newGame();
 			});
 			gameRestart.addEventListener('click', () => {
-
+				game.logic.newGame();
 			});
 			gameMainMenu.addEventListener('click', () => {
-
+				game.logic.newGame();
+				views.toggleView(startView)
 			});
 			gameOverPlayAgain.addEventListener('click', () => {
 
@@ -75,10 +76,6 @@ const display = (() => {
 
 			});
 		})();
-
-		return {
-			init,
-		};
 	})();
 
 	const playerFields = (() => {
@@ -107,10 +104,8 @@ const display = (() => {
 
 	return {
 		views,
-		buttons,
 		playerFields,
-	}
-
+	};
 })();
 
 const game = (() => {
@@ -126,14 +121,14 @@ const game = (() => {
 			let tileArray = e.target.id.split('');
 			tileArray.forEach(x => parseInt(x));
 			if (e.target.innerText == '') {
-				(logic.playerTurn(logic.turnIndex) == 'close') ? mark('close', tileArray[0], tileArray[1])
-				: mark('circle', tileArray[0], tileArray[1]);
-				if (checkWin(logic.playerTurn(logic.turnIndex)) == true) {
-					(logic.playerTurn(logic.turnIndex) == 'close') ? playerOne.addPoint()
-					: playerTwo.addPoint();
+				(logic.playerTurn(logic.getIndex()) == 'close') ? mark('close', tileArray[0], tileArray[1])
+					: mark('circle', tileArray[0], tileArray[1]);
+				if (checkWin(logic.playerTurn(logic.getIndex())) == true) {
+					(logic.playerTurn(logic.getIndex()) == 'close') ? playerOne.addPoint()
+						: playerTwo.addPoint();
 				}
 			};
-			logic.turnIndex++;
+			logic.stepIndex();
 		});
 
 		const checkWin = (value) => {
@@ -161,6 +156,14 @@ const game = (() => {
 			return false;
 		};
 
+		const clear = () => {
+			for (let i = 0; i < 3; i++) {
+				for (let j = 0; j < 3; j++) {
+					matrix[i][j].innerText = '';
+				}
+			}
+		}
+
 		const init = (() => {
 			fieldTiles.forEach(tile => tile.addEventListener('click', (e) => getTile(e)));
 			while (fieldTiles.length > 0) {
@@ -169,17 +172,15 @@ const game = (() => {
 		})();
 
 		return {
-			fieldTiles,
-			matrix,
-			mark,
-			getTile,
-			checkWin,
-			init,
+			clear,
 		};
 	})();
 
 	const logic = (() => {
 		let turnIndex = 0;
+
+		const getIndex = () => turnIndex;
+		const stepIndex = () => turnIndex++;
 
 		const playerTurn = (turnIndex) => {
 			return (turnIndex % 2 == 0) ? 'close' : 'circle';
@@ -189,11 +190,13 @@ const game = (() => {
 			playerOne.setScore(0);
 			playerTwo.setScore(0);
 			display.playerFields.refresh();
-			display.views.toggleView(gameScreen);
+			display.views.toggleView(gameView);
+			game.board.clear()
 		};
 
 		return {
-			turnIndex,
+			getIndex,
+			stepIndex,
 			playerTurn,
 			newGame,
 		};
