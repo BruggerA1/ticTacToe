@@ -2,7 +2,7 @@ const player = (name) => {
 	let score = 0;
 	const getScore = () => score;
 	const setScore = newScore => score = newScore;
-	const addPointToScore = () => {
+	const addPoint = () => {
 		score++;
 		display.playerFields.refresh();
 		return score;
@@ -13,7 +13,7 @@ const player = (name) => {
 	return {
 		getScore,
 		setScore,
-		addPointToScore,
+		addPoint,
 		getName,
 		setName,
 	};
@@ -60,7 +60,7 @@ const display = (() => {
 
 		const init = (() => {
 			startPlayGame.addEventListener('click', () => {
-				gameController.newGame();
+				game.logic.newGame();
 			});
 			gameRestart.addEventListener('click', () => {
 
@@ -110,98 +110,99 @@ const display = (() => {
 		buttons,
 		playerFields,
 	}
+
 })();
 
-const gameController = (() => {
-	const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
-	const boardMatrix = [];
-	const gameBoard = [
-		['', '', ''],
-		['', '', ''],
-		['', '', '']
-	];
+const game = (() => {
+	const board = (() => {
+		const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
+		const matrix = [];
 
-	let turnIndex = 0;
-	const playerTurn = (turnIndex) => {
-		return (turnIndex % 2 == 0) ? 'X' : 'O';
-	};
-
-	const markSymbol = (symbol, row, col) => {
-		boardMatrix[row][col].innerText = (symbol == 'X') ? 'close' : 'circle';
-		gameBoard[row][col] = (symbol == 'X') ? 'X' : 'O';
-		gameController.turnIndex++;
-	};
-
-	const checkBoard = (value) => {
-		// Rows
-		for (let i = 0; i < 3; i++) {
-			if (gameBoard[i][0] == value)
-				if (gameBoard[i][1] == value)
-					if (gameBoard[i][2] == value) return true;
+		const mark = (symbol, row, col) => {
+			matrix[row][col].innerText = (symbol == 'close') ? 'close' : 'circle';
 		};
 
-		// Columns
-		for (let i = 0; i < 3; i++) {
-			if (gameBoard[0][i] == value)
-				if (gameBoard[1][i] == value)
-					if (gameBoard[2][i] == value) return true;
-		};
-
-		// First Diagonal
-		if (gameBoard[0][0] == value)
-			if (gameBoard[1][1] == value)
-				if (gameBoard[2][2] == value) return true;
-
-		// Second Diagonal
-		if (gameBoard[0][2] == value)
-			if (gameBoard[1][1] == value)
-				if (gameBoard[2][0] == value) return true;
-
-		// No Win Condition		
-		return false;
-	};
-
-	const newGame = () => {
-		playerOne.setScore(0);
-		playerTwo.setScore(0);
-		display.playerFields.refresh();
-		display.views.toggleView(gameScreen);
-	};
-
-	const markTile = ((e) => {
-		let whosTurn = gameController.playerTurn(gameController.turnIndex);
-		let tileArray = e.target.id.split('');
-		tileArray.forEach(x => parseInt(x));
-
-		if (e.target.innerText == '') {
-			(whosTurn == 'X') ? gameController.markSymbol('X', tileArray[0], tileArray[1]) : gameController.markSymbol('O', tileArray[0], tileArray[1]);
-
-			if (gameController.checkBoard(whosTurn) == true) {
-				(whosTurn == 'X') ? playerOne.addPointToScore() : playerTwo.addPointToScore();
+		const getTile = ((e) => {
+			let tileArray = e.target.id.split('');
+			tileArray.forEach(x => parseInt(x));
+			if (e.target.innerText == '') {
+				(logic.playerTurn(logic.turnIndex) == 'close') ? mark('close', tileArray[0], tileArray[1])
+				: mark('circle', tileArray[0], tileArray[1]);
+				if (checkWin(logic.playerTurn(logic.turnIndex)) == true) {
+					(logic.playerTurn(logic.turnIndex) == 'close') ? playerOne.addPoint()
+					: playerTwo.addPoint();
+				}
 			};
+			logic.turnIndex++;
+		});
 
+		const checkWin = (value) => {
+			// Rows
+			for (let i = 0; i < 3; i++) {
+				if (matrix[i][0].innerText == value)
+					if (matrix[i][1].innerText == value)
+						if (matrix[i][2].innerText == value) return true;
+			};
+			// Columns
+			for (let i = 0; i < 3; i++) {
+				if (matrix[0][i].innerText == value)
+					if (matrix[1][i].innerText == value)
+						if (matrix[2][i].innerText == value) return true;
+			};
+			// First Diagonal
+			if (matrix[0][0].innerText == value)
+				if (matrix[1][1].innerText == value)
+					if (matrix[2][2].innerText == value) return true;
+			// Second Diagonal
+			if (matrix[0][2].innerText == value)
+				if (matrix[1][1].innerText == value)
+					if (matrix[2][0].innerText == value) return true;
+			// No Win Condition		
+			return false;
 		};
 
-	});
+		const init = (() => {
+			fieldTiles.forEach(tile => tile.addEventListener('click', (e) => getTile(e)));
+			while (fieldTiles.length > 0) {
+				matrix.push(fieldTiles.splice(0, 3));
+			};
+		})();
 
-	const init = (() => {
-		fieldTiles.forEach(tile => tile.addEventListener('click', (e) => gameController.markTile(e)));
-		while (fieldTiles.length > 0) {
-			boardMatrix.push(fieldTiles.splice(0, 3));
+		return {
+			fieldTiles,
+			matrix,
+			mark,
+			getTile,
+			checkWin,
+			init,
+		};
+	})();
+
+	const logic = (() => {
+		let turnIndex = 0;
+
+		const playerTurn = (turnIndex) => {
+			return (turnIndex % 2 == 0) ? 'close' : 'circle';
+		};
+
+		const newGame = () => {
+			playerOne.setScore(0);
+			playerTwo.setScore(0);
+			display.playerFields.refresh();
+			display.views.toggleView(gameScreen);
+		};
+
+		return {
+			turnIndex,
+			playerTurn,
+			newGame,
 		};
 	})();
 
 	return {
-		gameBoard,
-		markSymbol,
-		checkBoard,
-		init,
-		newGame,
-		turnIndex,
-		playerTurn,
-		markTile,
-	}
-
+		board,
+		logic,
+	};
 })();
 
 
