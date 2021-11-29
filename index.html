@@ -30,6 +30,11 @@
 				<input id="startPlayerTwoTextBox" type="text" placeholder="Player 2">
 				<span id="startPlayerTwoSymbol" class="material-icons-outlined">circle</span>
 			</div>
+			<div id="starScore" class="flexCol">
+				<span id="scoreText">Score To Win:</span>
+				<input type="range" id="scoreRange">
+				<span id="scoreLabel">##</span>
+			</div>
 			<button id="startPlayGame">Play Game</button>
 		</div>
 		<div id="startFooter" class="flexRow">A bru.GG Production</div>
@@ -74,6 +79,12 @@
 			<button id="gameOverMainMenu">Main Menu</button>
 		</div>
 	</div>
+
+	<!-- Modal -->
+	<div id="gameViewModal" class="hidden flexCol">
+		<button id=gameNextRound>Next</button>
+	</div>
+
 </body>
 
 </html>

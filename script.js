@@ -5,6 +5,7 @@ const player = (name) => {
 	const addPoint = () => {
 		score++;
 		display.playerFields.refresh();
+		display.views.toggleModal();
 		return score;
 	};
 	const getName = () => name;
@@ -24,6 +25,11 @@ const display = (() => {
 		const startView = document.getElementById('startView');
 		const gameView = document.getElementById('gameView');
 		const gameOverView = document.getElementById('gameOverView');
+		gameViewModal = document.getElementById('gameViewModal');
+
+		const toggleModal = () => {
+			gameViewModal.classList.toggle("hidden");
+		};
 
 		const toggleView = view => {
 			switch (view) {
@@ -47,6 +53,7 @@ const display = (() => {
 
 		return {
 			toggleView,
+			toggleModal,
 		};
 		
 	})();
@@ -57,6 +64,8 @@ const display = (() => {
 		const gameMainMenu = document.getElementById('gameMainMenu');
 		const gameOverPlayAgain = document.getElementById('gameOverPlayAgain');
 		const gameOverMainMenu = document.getElementById('gameOverMainMenu');
+
+		const gameNextRound = document.getElementById('gameNextRound');
 
 		const init = (() => {
 			startPlayGame.addEventListener('click', () => {
@@ -75,6 +84,11 @@ const display = (() => {
 			gameOverMainMenu.addEventListener('click', () => {
 
 			});
+			gameNextRound.addEventListener('click', ()=> {
+				game.board.clear();
+				views.toggleModal();
+			});
+
 		})();
 	})();
 
@@ -123,12 +137,15 @@ const game = (() => {
 			if (e.target.innerText == '') {
 				(logic.playerTurn(logic.getIndex()) == 'close') ? mark('close', tileArray[0], tileArray[1])
 					: mark('circle', tileArray[0], tileArray[1]);
+
 				if (checkWin(logic.playerTurn(logic.getIndex())) == true) {
 					(logic.playerTurn(logic.getIndex()) == 'close') ? playerOne.addPoint()
 						: playerTwo.addPoint();
-				}
+				};
 			};
+			logic.referee();
 			logic.stepIndex();
+
 		});
 
 		const checkWin = (value) => {
@@ -165,7 +182,9 @@ const game = (() => {
 		}
 
 		const init = (() => {
-			fieldTiles.forEach(tile => tile.addEventListener('click', (e) => getTile(e)));
+			fieldTiles.forEach(tile => tile.addEventListener('click', (e) => {
+				getTile(e);
+			}));
 			while (fieldTiles.length > 0) {
 				matrix.push(fieldTiles.splice(0, 3));
 			};
@@ -194,17 +213,64 @@ const game = (() => {
 			game.board.clear()
 		};
 
+		const referee = (() => {
+			if (playerOne.getScore() == game.score.getMaxScore()){
+				console.log('PLAYER ONE WINS');
+				gameOver();
+			}
+
+			if (playerTwo.getScore() == game.score.getMaxScore()) {
+				console.log('PLAYER ONE WINS');
+				gameOver();
+			}
+		});
+
+		const gameOver = () => {
+			display.views.toggleModal();
+			display.views.toggleView(gameOverView);
+		}
+
 		return {
 			getIndex,
 			stepIndex,
 			playerTurn,
 			newGame,
+			referee
+		};
+	})();
+
+	const score = (() => {
+		const scoreRange = document.getElementById('scoreRange');
+		scoreRange.min = 1;
+		scoreRange.max = 10
+		scoreRange.value = 3;
+
+		const scoreLabel = document.getElementById('scoreLabel');
+
+		const updateScoreLabel = (()=> {
+			scoreLabel.innerText = `${scoreRange.value} Rounds`;
+			setMaxScore(scoreRange.value);
+		});
+
+		let maxScore;
+		const getMaxScore = () => maxScore;
+		const setMaxScore = (newScore) => maxScore = newScore;
+
+
+		init = (() => {
+			updateScoreLabel();
+			scoreRange.addEventListener('change', () => updateScoreLabel());
+		})();
+
+		return {
+			getMaxScore,
 		};
 	})();
 
 	return {
 		board,
 		logic,
+		score,
 	};
 })();
 
