@@ -1,279 +1,265 @@
-const player = (name) => {
+const player = (name = '') => {
 	let score = 0;
 	const getScore = () => score;
 	const setScore = newScore => score = newScore;
 	const addPoint = () => {
 		score++;
-		display.playerFields.refresh();
-		display.views.toggleModal();
 		return score;
 	};
 	const getName = () => name;
 	const setName = newName => name = newName;
 
-	return {
-		getScore,
-		setScore,
-		addPoint,
-		getName,
-		setName,
-	};
+	return { getScore, setScore, addPoint, getName, setName };
 };
 
-const display = (() => {
-	const views = (() => {
-		const startView = document.getElementById('startView');
-		const gameView = document.getElementById('gameView');
-		const gameOverView = document.getElementById('gameOverView');
-		gameViewModal = document.getElementById('gameViewModal');
+const playerONE = player();
+const playerTWO = player();
 
-		const toggleModal = () => {
-			gameViewModal.classList.toggle("hidden");
+const views = (() => {
+	const startView = document.getElementById('startView');
+	const gameView = document.getElementById('gameView');
+	const gameOverView = document.getElementById('gameOverView');
+	const gameViewModal = document.getElementById('gameViewModal');
+
+	const toggle = view => {
+		switch (view) {
+			case startView:
+				startView.classList.remove("hidden");
+				gameView.classList.add("hidden");
+				gameOverView.classList.add("hidden");
+				break;
+			case gameView:
+				startView.classList.add("hidden");
+				gameView.classList.remove("hidden");
+				gameOverView.classList.add("hidden");
+				break;
+			case gameOverView:
+				startView.classList.add("hidden");
+				gameView.classList.add("hidden");
+				gameOverView.classList.remove("hidden");
+				break;
+			case gameViewModal:
+				gameViewModal.classList.toggle("hidden");
+				break;
 		};
-
-		const toggleView = view => {
-			switch (view) {
-				case startView:
-					startView.classList.remove("hidden");
-					gameView.classList.add("hidden");
-					gameOverView.classList.add("hidden");
-					break;
-				case gameView:
-					startView.classList.add("hidden");
-					gameView.classList.remove("hidden");
-					gameOverView.classList.add("hidden");
-					break;
-				case gameOverView:
-					startView.classList.add("hidden");
-					gameView.classList.add("hidden");
-					gameOverView.classList.remove("hidden");
-					break;
-			};
-		};
-
-		return {
-			toggleView,
-			toggleModal,
-		};
-		
-	})();
-
-	const buttons = (() => {
-		const startPlayGame = document.getElementById('startPlayGame');
-		const gameRestart = document.getElementById('gameRestart');
-		const gameMainMenu = document.getElementById('gameMainMenu');
-		const gameOverPlayAgain = document.getElementById('gameOverPlayAgain');
-		const gameOverMainMenu = document.getElementById('gameOverMainMenu');
-
-		const gameNextRound = document.getElementById('gameNextRound');
-
-		const init = (() => {
-			startPlayGame.addEventListener('click', () => {
-				game.logic.newGame();
-			});
-			gameRestart.addEventListener('click', () => {
-				game.logic.newGame();
-			});
-			gameMainMenu.addEventListener('click', () => {
-				game.logic.newGame();
-				views.toggleView(startView)
-			});
-			gameOverPlayAgain.addEventListener('click', () => {
-
-			});
-			gameOverMainMenu.addEventListener('click', () => {
-
-			});
-			gameNextRound.addEventListener('click', ()=> {
-				game.board.clear();
-				views.toggleModal();
-			});
-
-		})();
-	})();
-
-	const playerFields = (() => {
-		const playerOneTextBox = document.getElementById('startPlayerOneTextBox');
-		const playerOneName = document.getElementById('playerOneName');
-		const playerOneScore = document.getElementById('playerOneScore');
-
-		const playerTwoTextBox = document.getElementById('startPlayerTwoTextBox');
-		const playerTwoName = document.getElementById('playerTwoName');
-		const playerTwoScore = document.getElementById('playerTwoScore');
-
-		const refresh = (() => {
-			playerOne.setName(playerOneTextBox.value);
-			playerOneName.innerText = playerOne.getName();
-			playerOneScore.innerText = playerOne.getScore();
-
-			playerTwo.setName(playerTwoTextBox.value);
-			playerTwoName.innerText = playerTwo.getName();
-			playerTwoScore.innerText = playerTwo.getScore();
-		});
-
-		return {
-			refresh,
-		};
-	})();
-
-	return {
-		views,
-		playerFields,
 	};
+
+	return { toggle };
 })();
 
-const game = (() => {
-	const board = (() => {
-		const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
-		const matrix = [];
+const buttons = (() => {
+	const startPlayGame = document.getElementById('startPlayGame');
+	const gameRestart = document.getElementById('gameRestart');
+	const gameMainMenu = document.getElementById('gameMainMenu');
+	const gameOverPlayAgain = document.getElementById('gameOverPlayAgain');
+	const gameOverMainMenu = document.getElementById('gameOverMainMenu');
+	const gameNextRound = document.getElementById('gameNextRound');
 
-		const mark = (symbol, row, col) => {
-			matrix[row][col].innerText = (symbol == 'close') ? 'close' : 'circle';
+	// init object
+	startPlayGame.addEventListener('click', () => {
+		gameLogic.newRound();
+	});
+	gameRestart.addEventListener('click', () => {
+		gameLogic.newRound();
+		playerONE.setScore(0);
+		playerTWO.setScore(0);
+		playerScoreBoard.update();
+	});
+	gameMainMenu.addEventListener('click', () => {
+		views.toggle(startView);
+	});
+	gameOverPlayAgain.addEventListener('click', () => {
+		gameLogic.newRound();
+		playerONE.setScore(0);
+		playerTWO.setScore(0);
+		playerScoreBoard.update();
+		views.toggle(gameView);
+	});
+	gameOverMainMenu.addEventListener('click', () => {
+		gameLogic.newRound();
+		playerONE.setScore(0);
+		playerTWO.setScore(0);
+		playerScoreBoard.update();
+		views.toggle(startView);
+	});
+	gameNextRound.addEventListener('click', () => {
+		gameLogic.newRound();
+		views.toggle(gameViewModal);
+	});
+})();
+
+const playerName = (() => {
+	const one = (() => document.getElementById('startPlayerOneTextBox').value);
+	const two = (() => document.getElementById('startPlayerTwoTextBox').value);
+
+	return { one, two };
+})();
+
+const playerScoreBoard = (() => {
+	const nameOne = document.getElementById('playerOneName');
+	const scoreOne = document.getElementById('playerOneScore');
+	const nameTwo = document.getElementById('playerTwoName');
+	const scoreTwo = document.getElementById('playerTwoScore');
+
+	const roundWinner = document.getElementById('roundWinner');
+	const displayRoundWinner = () => roundWinner.innerText = turnLogic.playerTurn();
+
+	const gameWinner = document.getElementById('gameWinner');
+	const displayGameWinner = () => gameWinner.innerText = turnLogic.playerTurn();
+
+	const update = () => {
+		nameOne.innerText = playerONE.getName();
+		scoreOne.innerText = playerONE.getScore();
+
+		nameTwo.innerText = playerTWO.getName();
+		scoreTwo.innerText = playerTWO.getScore();
+	};
+
+	return { update, displayRoundWinner, displayGameWinner };
+})();
+
+const scoreRange = (() => {
+	const slider = document.getElementById('rangeSlider');
+	const label = document.getElementById('scoreLabel');
+
+	const setMaxScore = value => {
+		slider.value = value;
+		label.innerText = value;
+	};
+
+	const getMaxScore = () => slider.value;
+
+	// init object
+	slider.addEventListener('change', () => setMaxScore(slider.value));
+	[slider.min, slider.max] = [1, 10];
+	setMaxScore(3);
+
+	return { getMaxScore };
+})();
+
+const gameBoard = (() => {
+	const fieldTiles = Array.from(document.querySelectorAll('.gameTile'));
+	const matrix = [];
+
+	const markTile = targetTile => {
+		let row = targetTile.dataset.row;
+		let col = targetTile.dataset.col;
+		if (targetTile.innerText == '') {
+			if (turnLogic.isTurnOver == true) return;
+
+			matrix[row][col].innerText = turnLogic.playerTurn();
+
+			gameLogic.checkWin(matrix[row][col].innerText);
+			turnLogic.nextTurn();
 		};
+	};
 
-		const getTile = ((e) => {
-			let tileArray = e.target.id.split('');
-			tileArray.forEach(x => parseInt(x));
-			if (e.target.innerText == '') {
-				(logic.playerTurn(logic.getIndex()) == 'close') ? mark('close', tileArray[0], tileArray[1])
-					: mark('circle', tileArray[0], tileArray[1]);
+	const clear = () => {
+		matrix.forEach(row => {
+			row.forEach(column => column.innerText = '');
+		});
+	};
 
-				if (checkWin(logic.playerTurn(logic.getIndex())) == true) {
-					(logic.playerTurn(logic.getIndex()) == 'close') ? playerOne.addPoint()
-						: playerTwo.addPoint();
+	// init object
+	fieldTiles.forEach(tile => tile.addEventListener('click', (e) => markTile(e.target)));
+	while (fieldTiles.length > 0) matrix.push(fieldTiles.splice(0, 3));
+
+	return { fieldTiles, matrix, markTile, clear };
+
+})();
+
+const turnLogic = (() => {
+	let isTurnOver = false;
+	let turnIndex = 0;
+
+	const getTurn = () => turnIndex;
+	const resetTurn = () => {
+		turnIndex = 0;
+		turnLogic.isTurnOver = false;;
+	};
+	const endTurn = () => {
+		turnLogic.isTurnOver = true;
+	};
+	const nextTurn = () => {
+		turnIndex++;
+		return turnIndex;
+	};
+	const playerTurn = () => {
+		return (turnIndex % 2 == 0) ? 'close' : 'circle'
+	};
+
+	return { getTurn, resetTurn, nextTurn, playerTurn, isTurnOver, endTurn }
+})();
+
+const gameLogic = (() => {
+
+
+	const newRound = () => {
+		turnLogic.resetTurn();
+		gameBoard.clear();
+		views.toggle(gameView);
+		playerONE.setName(playerName.one());
+		playerTWO.setName(playerName.two());
+		playerScoreBoard.update();
+	};
+
+	const scoreCheck = (player) => {
+		if (player == scoreRange.getMaxScore()) {
+			playerScoreBoard.displayGameWinner();
+			views.toggle(gameOverView);
+			views.toggle(gameViewModal);
+		};
+	};
+
+	const winRound = () => {
+		turnLogic.endTurn();
+		playerScoreBoard.displayRoundWinner();
+		if (turnLogic.playerTurn() == 'close') {
+			playerONE.addPoint();
+			scoreCheck(playerONE.getScore());
+		}
+		else {
+			playerTWO.addPoint();
+			scoreCheck(playerTWO.getScore());
+		};
+		playerScoreBoard.update();
+		views.toggle(gameViewModal);
+	};
+
+	const checkWin = (value) => {
+		// Draw
+		if (turnLogic.getTurn() == 9) {
+			views.toggle(gameViewModal);
+		}
+		// Rows
+		for (let i = 0; i < 3; i++) {
+			if (gameBoard.matrix[i][0].innerText == value)
+				if (gameBoard.matrix[i][1].innerText == value)
+					if (gameBoard.matrix[i][2].innerText == value) {
+						winRound();
+					};
+		};
+		// Columns
+		for (let i = 0; i < 3; i++) {
+			if (gameBoard.matrix[0][i].innerText == value)
+				if (gameBoard.matrix[1][i].innerText == value)
+					if (gameBoard.matrix[2][i].innerText == value) {
+						winRound();
+					};
+		};
+		// First Diagonal
+		if (gameBoard.matrix[0][0].innerText == value)
+			if (gameBoard.matrix[1][1].innerText == value)
+				if (gameBoard.matrix[2][2].innerText == value) {
+					winRound();
 				};
-			};
-			logic.referee();
-			logic.stepIndex();
-
-		});
-
-		const checkWin = (value) => {
-			// Rows
-			for (let i = 0; i < 3; i++) {
-				if (matrix[i][0].innerText == value)
-					if (matrix[i][1].innerText == value)
-						if (matrix[i][2].innerText == value) return true;
-			};
-			// Columns
-			for (let i = 0; i < 3; i++) {
-				if (matrix[0][i].innerText == value)
-					if (matrix[1][i].innerText == value)
-						if (matrix[2][i].innerText == value) return true;
-			};
-			// First Diagonal
-			if (matrix[0][0].innerText == value)
-				if (matrix[1][1].innerText == value)
-					if (matrix[2][2].innerText == value) return true;
-			// Second Diagonal
-			if (matrix[0][2].innerText == value)
-				if (matrix[1][1].innerText == value)
-					if (matrix[2][0].innerText == value) return true;
-			// No Win Condition		
-			return false;
-		};
-
-		const clear = () => {
-			for (let i = 0; i < 3; i++) {
-				for (let j = 0; j < 3; j++) {
-					matrix[i][j].innerText = '';
-				}
-			}
-		}
-
-		const init = (() => {
-			fieldTiles.forEach(tile => tile.addEventListener('click', (e) => {
-				getTile(e);
-			}));
-			while (fieldTiles.length > 0) {
-				matrix.push(fieldTiles.splice(0, 3));
-			};
-		})();
-
-		return {
-			clear,
-		};
-	})();
-
-	const logic = (() => {
-		let turnIndex = 0;
-
-		const getIndex = () => turnIndex;
-		const stepIndex = () => turnIndex++;
-
-		const playerTurn = (turnIndex) => {
-			return (turnIndex % 2 == 0) ? 'close' : 'circle';
-		};
-
-		const newGame = () => {
-			playerOne.setScore(0);
-			playerTwo.setScore(0);
-			display.playerFields.refresh();
-			display.views.toggleView(gameView);
-			game.board.clear()
-		};
-
-		const referee = (() => {
-			if (playerOne.getScore() == game.score.getMaxScore()){
-				console.log('PLAYER ONE WINS');
-				gameOver();
-			}
-
-			if (playerTwo.getScore() == game.score.getMaxScore()) {
-				console.log('PLAYER ONE WINS');
-				gameOver();
-			}
-		});
-
-		const gameOver = () => {
-			display.views.toggleModal();
-			display.views.toggleView(gameOverView);
-		}
-
-		return {
-			getIndex,
-			stepIndex,
-			playerTurn,
-			newGame,
-			referee
-		};
-	})();
-
-	const score = (() => {
-		const scoreRange = document.getElementById('scoreRange');
-		scoreRange.min = 1;
-		scoreRange.max = 10
-		scoreRange.value = 3;
-
-		const scoreLabel = document.getElementById('scoreLabel');
-
-		const updateScoreLabel = (()=> {
-			scoreLabel.innerText = `${scoreRange.value} Rounds`;
-			setMaxScore(scoreRange.value);
-		});
-
-		let maxScore;
-		const getMaxScore = () => maxScore;
-		const setMaxScore = (newScore) => maxScore = newScore;
-
-
-		init = (() => {
-			updateScoreLabel();
-			scoreRange.addEventListener('change', () => updateScoreLabel());
-		})();
-
-		return {
-			getMaxScore,
-		};
-	})();
-
-	return {
-		board,
-		logic,
-		score,
+		// Second Diagonal
+		if (gameBoard.matrix[0][2].innerText == value)
+			if (gameBoard.matrix[1][1].innerText == value)
+				if (gameBoard.matrix[2][0].innerText == value) {
+					winRound();
+				};
 	};
+
+	return { newRound, checkWin };
 })();
-
-
-const playerOne = player('');
-const playerTwo = player('');

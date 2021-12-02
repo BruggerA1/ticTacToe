@@ -32,7 +32,7 @@
 			</div>
 			<div id="starScore" class="flexCol">
 				<span id="scoreText">Score To Win:</span>
-				<input type="range" id="scoreRange">
+				<input type="range" id="rangeSlider">
 				<span id="scoreLabel">##</span>
 			</div>
 			<button id="startPlayGame">Play Game</button>
@@ -54,15 +54,15 @@
 		</div>
 		<div id="gameFieldContainer" class="flexRow">
 			<div id=gameField>
-				<div id="00" class="gameTile material-icons-outlined"></div>
-				<div id="01" class="gameTile material-icons-outlined"></div>
-				<div id="02" class="gameTile material-icons-outlined"></div>
-				<div id="10" class="gameTile material-icons-outlined"></div>
-				<div id="11" class="gameTile material-icons-outlined"></div>
-				<div id="12" class="gameTile material-icons-outlined"></div>
-				<div id="20" class="gameTile material-icons-outlined"></div>
-				<div id="21" class="gameTile material-icons-outlined"></div>
-				<div id="22" class="gameTile material-icons-outlined"></div>
+				<div class="gameTile material-icons-outlined" data-row="0" data-col="0"></div>
+				<div class="gameTile material-icons-outlined" data-row="0" data-col="1"></div>
+				<div class="gameTile material-icons-outlined" data-row="0" data-col="2"></div>
+				<div class="gameTile material-icons-outlined" data-row="1" data-col="0"></div>
+				<div class="gameTile material-icons-outlined" data-row="1" data-col="1"></div>
+				<div class="gameTile material-icons-outlined" data-row="1" data-col="2"></div>
+				<div class="gameTile material-icons-outlined" data-row="2" data-col="0"></div>
+				<div class="gameTile material-icons-outlined" data-row="2" data-col="1"></div>
+				<div class="gameTile material-icons-outlined" data-row="2" data-col="2"></div>
 			</div>
 		</div>
 		<div id="gameFooter" class="flexCol">
@@ -73,7 +73,11 @@
 
 	<!-- Game Over Screen -->
 	<div id="gameOverView" class="hidden screen flexCol">
-		<span id="gameOverText">Game Over</span>
+		<span id="endGameText" class="flexRow">
+			<span id="gameWinner" class="material-icons-outlined"></span>
+			<span id="gameWinText">Wins the game!</span>
+		</span>
+
 		<div id="gameOverOptions" class="flexCol">
 			<button id="gameOverPlayAgain">Play Again</button>
 			<button id="gameOverMainMenu">Main Menu</button>
@@ -82,7 +86,11 @@
 
 	<!-- Modal -->
 	<div id="gameViewModal" class="hidden flexCol">
-		<button id=gameNextRound>Next</button>
+		<span id="endRoundText" class="flexRow">
+			<span id="roundWinner" class="material-icons-outlined"></span>
+			<span id="roundWinText">Wins the round!</span>
+		</span>
+		<button id=gameNextRound>Next Round</button>
 	</div>
 
 </body>

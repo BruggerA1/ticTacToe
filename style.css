@@ -123,5 +123,40 @@
 	left: 30vw;
 	border: solid;
 	z-index: 1;
-	background-color: rgba(255,255,255,0.6);
+	background-color: rgba(255,255,255,0.8);
+}
+
+#endRoundText {
+	height: 20vh;
+	width: 90%;
+	justify-content: space-evenly;
+}
+
+#roundWinner {
+	transform: scale(1.6);
+}
+
+#roundWinText {
+	font-size: 28px;
+}
+
+#gameNextRound {
+	height: 50px;
+	width: 100px;
+	margin: 4px;
+	border-radius: 8px;
+	position: absolute;
+	bottom: 0 ;
+}
+
+#gameNextRound::before {
+	content: '';
+	height: inherit;
+	width: inherit;
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	border-radius: 8px;
+	background-image: linear-gradient(180deg, white, black);
+	opacity: 20%;
 }
