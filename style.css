@@ -1,162 +1,204 @@
-/* Global Styles */
-/* 
+/* Global Style */
 :root {
-} 
-*/
+	--colorOne: #cacaca;
+	--colorTwo: #8c9ead;
+	--colorThree: #2f2f2f;
+	--colorFour: #202020;
+	--colorFive: #101010;
+}
 
 * {
 	margin: 0;
 	padding: 0;
 
+	font-family: 'Bungee', cursive;
+
 	box-sizing: border-box;
 }
 
+/* Global Classes */
 .flexRow {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 }
 
 .flexCol {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 }
 
-/* Screen Styles */
 .screen {
 	height: 100vh;
-	/* temp */
-	border: dashed 1px;
+	background-color: var(--colorFour);
 }
 
 .hidden {
-	display: none !important;
+	display: none;
 }
 
-/* Title Screen */
+.shadowOne {
+	filter: drop-shadow(1px 2px 2px #000000);
+}
+
+.shadowTwo {
+	filter: drop-shadow(2px 4px 4px #000000);
+}
+
+.shadowThree {
+	filter: drop-shadow(4px 8px 8px #000000);
+}
+
+.fontSizeOne {
+	font-size: 18pt;
+}
+
+.colorOne {
+	color: var(--colorOne);
+}
+
+.colorTwo {
+	background-color: var(--colorTwo);
+}
+
+.clickHover {
+	cursor: pointer;
+	transition: 200ms ease-in-out;
+}
+
+.clickHover:hover {
+	transform: scale(1.1);
+}
+
+.borderRound {
+	border: solid 2px var(--colorFive);
+	border-radius: 8px;
+}
+
+.buffer {
+	margin: 1vh;
+}
+
+/* <startView>  */
 #startTitle {
-	height: 10vh;
+	font-size: 48pt;
 }
 
 #startPlayerSelect {
 	height: 80vh;
-	justify-content: space-around;
 }
 
-#startPlayerOne, #startPlayerTwo {
-	border: solid;
+#startPlayerOne,
+#startPlayerTwo {
 	height: 20vh;
-	width: 40vw;
-	justify-content: space-around;
+
+	background-color: var(--colorThree);
 }
 
-#startPlayerOneTextBox, #startPlayerTwoTextBox {
-	width: 60%;
-	height: 20%;
+#startPlayerOneTextBox,
+#startPlayerTwoTextBox {
+	width: 80%;
+	line-height: 2em;
+
+	color: var(--colorFive);
+
 	text-align: center;
 }
 
-#gameScoreContainer {
-	justify-content: space-around;
+#startPlayerOneTextBox::placeholder,
+#startPlayerTwoTextBox::placeholder {
+	color: var(--colorFive);
 }
 
-#startFooter {
-	height: 10vh;
+#startPlayerOneSymbol,
+#startPlayerTwoSymbol {
+	font-size: 28pt !important;
 }
-/* Game Screen */
-#gameScoreContainer {
-	height: 10vh;
+
+#rangeSlider {
+	width: 15vmin;
+
+	transform: scale(2);
+}
+
+#startPlayGame {
+	height: 8vh;
+	width: 20vmin;
+}
+
+/* <gameView> */
+#gameView {
+	align-items: stretch;
+}
+
+#gameRestart,
+#gameMainMenu {
+	height: 4vh;
+	width: 20vmin;
 }
 
 #gameField {
 	display: grid;
 	grid-template-columns: repeat(3, 20vw);
 	grid-gap: 4px;
-	background-color: black;
-	width: 60vw;
-	height: 60vmin;
 }
-
 
 .gameTile {
-	display: flex;
-	background-color: white;
-	text-align: center;
-	overflow: hidden;
 	height: 20vmin;
-	font-size: 20vmin !important;
-	line-height: 20vmin !important;
-}
 
+	text-align: center;
+
+	font-size: 20vmin !important;
+}
 
 .gameTile:hover {
-	border: rgba(255,0,0,0.6) 4px solid;
+	border: solid 4px var(--colorFive);
 }
 
-#gameFieldContainer {
-	border: solid 1px;
-	height: 80vh;
+/* <gameOverView> */
+#gameWinner {
+	font-size: 64pt !important;
+}
+#gameWinText {
+	font-size: 36pt;
 }
 
-#gameFooter {
-	border: solid 1px;
-	height: 10vh;
-	justify-content: space-evenly;
+#gameOverPlayAgain,
+#gameOverMainMenu {
+	height: 5vh;
+	width: 20vmin;
 }
 
-#gameOverScreen {
-	justify-content: space-evenly;
-}
-
-#gameOverOptions {
-	justify-content: space-around;
-	height: 10vh;
-}
-
+/* <gameViewModal> */
 #gameViewModal {
+	height: 40vh;
+	width: 30vw;
+
 	position: absolute;
-	width: 40vw;
-	height: 30vh;
-	top: 35vh;
-	left: 30vw;
-	border: solid;
+	top: 30vh;
+	left: 35vw;
+
+	background-color: var(--colorThree);
+
+	text-align: center;
+
 	z-index: 1;
-	background-color: rgba(255,255,255,0.8);
 }
 
 #endRoundText {
 	height: 20vh;
-	width: 90%;
-	justify-content: space-evenly;
 }
 
 #roundWinner {
-	transform: scale(1.6);
-}
-
-#roundWinText {
-	font-size: 28px;
+	font-size: 64pt !important;
 }
 
 #gameNextRound {
 	height: 50px;
 	width: 100px;
-	margin: 4px;
-	border-radius: 8px;
-	position: absolute;
-	bottom: 0 ;
-}
 
-#gameNextRound::before {
-	content: '';
-	height: inherit;
-	width: inherit;
 	position: absolute;
-	left: -2px;
-	top: -2px;
-	border-radius: 8px;
-	background-image: linear-gradient(180deg, white, black);
-	opacity: 20%;
+	bottom: 0;
 }

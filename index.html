@@ -6,93 +6,102 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+	<!-- ticTacToe.GG -->
 	<title>ticTacToe.GG</title>
 
+	<!-- CSS -->
 	<link rel="stylesheet" href="style.css" />
+	<!-- Google Icons -->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
 
+	<!-- Javascript *deferred* -->
 	<script src="script.js" defer></script>
 </head>
 
 <body>
 	<!-- Start Screen -->
 	<div id="startView" class="screen flexCol">
-		<div id="startTitle" class="flexRow">Tic-Tac-Toe</div>
+		<div id="startTitle" class="flexRow shadowOne colorOne">tic tac toe . gg</div>
 		<div id="startPlayerSelect" class="flexCol">
-			<div id="startPlayerOne" class="flexCol">
-				<span id="startPlayerOneLabel">PLAYER ONE</span>
-				<input id="startPlayerOneTextBox" type="text" placeholder="Player 1">
-				<span id="startPlayerOneSymbol" class="material-icons-outlined">close</span>
+			<div id="startPlayerOne" class="flexCol fontSizeOne shadowThree colorOne clickHover borderRound">
+				<span id="startPlayerOneLabel" class="shadowTwo">PLAYER ONE</span>
+				<input id="startPlayerOneTextBox" class="shadowOne fontSizeOne borderRound colorTwo" type="text"
+					placeholder="Player 1">
+				<span id="startPlayerOneSymbol" class="material-icons-outlined shadowOne buffer">close</span>
 			</div>
-			<div id="startPlayerTwo" class="flexCol">
-				<span id="startPlayerTwoLabel">PLAYER TWO</span>
-				<input id="startPlayerTwoTextBox" type="text" placeholder="Player 2">
-				<span id="startPlayerTwoSymbol" class="material-icons-outlined">circle</span>
+			<div id="startPlayerTwo" class="flexCol fontSizeOne shadowThree colorOne clickHover borderRound">
+				<span id="startPlayerTwoLabel" class="shadowTwo">PLAYER TWO</span>
+				<input id="startPlayerTwoTextBox" class="shadowOne fontSizeOne borderRound colorTwo" type="text"
+					placeholder="Player 2">
+				<span id="startPlayerTwoSymbol" class="material-icons-outlined shadowOne buffer">circle</span>
 			</div>
 			<div id="starScore" class="flexCol">
-				<span id="scoreText">Score To Win:</span>
-				<input type="range" id="rangeSlider">
-				<span id="scoreLabel">##</span>
+				<span id="scoreText" class="shadowOne fontSizeOne colorOne">Score To Win:</span>
+				<input type="range" id="rangeSlider" class="buffer">
+				<span id="scoreLabel" class="shadowOne fontSizeOne colorOne">##</span>
 			</div>
-			<button id="startPlayGame">Play Game</button>
+			<button id="startPlayGame" class="clickHover borderRound colorTwo">Play Game</button>
 		</div>
-		<div id="startFooter" class="flexRow">A bru.GG Production</div>
+		<div id="startFooter" class="flexRow shadowOne colorOne">A bru.GG Production</div>
 	</div>
 
 	<!-- Content Screen -->
-	<div id="gameView" class="hidden screen">
+	<div id="gameView" class="hidden screen flexCol">
 		<div id="gameScoreContainer" class="flexRow">
-			<div id="playerOneScoreBoard" class="flexCol">
+			<div id="playerOneScoreBoard" class="flexCol shadowOne fontSizeOne colorOne">
 				<span id="playerOneName">Name</span>
 				<span id="playerOneScore">Score</span>
 			</div>
-			<div id="playerTwoScoreBoard" class="flexCol">
+			<div id="playerTwoScoreBoard" class="flexCol shadowTwo fontSizeOne colorOne">
 				<span id="playerTwoName">Name</span>
 				<span id="playerTwoScore">Score</span>
 			</div>
 		</div>
 		<div id="gameFieldContainer" class="flexRow">
-			<div id=gameField>
-				<div class="gameTile material-icons-outlined" data-row="0" data-col="0"></div>
-				<div class="gameTile material-icons-outlined" data-row="0" data-col="1"></div>
-				<div class="gameTile material-icons-outlined" data-row="0" data-col="2"></div>
-				<div class="gameTile material-icons-outlined" data-row="1" data-col="0"></div>
-				<div class="gameTile material-icons-outlined" data-row="1" data-col="1"></div>
-				<div class="gameTile material-icons-outlined" data-row="1" data-col="2"></div>
-				<div class="gameTile material-icons-outlined" data-row="2" data-col="0"></div>
-				<div class="gameTile material-icons-outlined" data-row="2" data-col="1"></div>
-				<div class="gameTile material-icons-outlined" data-row="2" data-col="2"></div>
+			<div id="gameField" class="shadowThree">
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="0" data-col="0"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="0" data-col="1"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="0" data-col="2"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="1" data-col="0"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="1" data-col="1"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="1" data-col="2"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="2" data-col="0"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="2" data-col="1"></div>
+				<div class="gameTile material-icons-outlined borderRound colorTwo" data-row="2" data-col="2"></div>
 			</div>
 		</div>
 		<div id="gameFooter" class="flexCol">
-			<button id="gameRestart">Restart</button>
-			<button id="gameMainMenu">Main Menu</button>
+			<button id="gameRestart" class="shadowTwo clickHover buffer colorTwo">Restart</button>
+			<button id="gameMainMenu" class="shadowTwo clickHover buffer colorTwo">Main Menu</button>
 		</div>
 	</div>
 
 	<!-- Game Over Screen -->
 	<div id="gameOverView" class="hidden screen flexCol">
-		<span id="endGameText" class="flexRow">
-			<span id="gameWinner" class="material-icons-outlined"></span>
+		<span id="endGameText" class="flexCol shadowOne colorOne">
+			<span id="gameWinner" class="material-icons-outlined">circle</span>
 			<span id="gameWinText">Wins the game!</span>
 		</span>
 
 		<div id="gameOverOptions" class="flexCol">
-			<button id="gameOverPlayAgain">Play Again</button>
-			<button id="gameOverMainMenu">Main Menu</button>
+			<button id="gameOverPlayAgain" class="clickHover buffer colorTwo">Play Again</button>
+			<button id="gameOverMainMenu" class="clickHover buffer colorTwo">Main Menu</button>
 		</div>
 	</div>
 
 	<!-- Modal -->
-	<div id="gameViewModal" class="hidden flexCol">
-		<span id="endRoundText" class="flexRow">
-			<span id="roundWinner" class="material-icons-outlined"></span>
-			<span id="roundWinText">Wins the round!</span>
+	<div id="gameViewModal" class="hidden flexCol shadowThree borderRound">
+		<span id="endRoundText" class="flexCol">
+			<span id="roundWinner" class="material-icons-outlined shadowTwo colorOne">circle</span>
+			<span id="roundWinText" class="fontSizeOne colorOne">Wins the round!</span>
 		</span>
-		<button id=gameNextRound>Next Round</button>
+		<button id="gameNextRound" class="shadowTwo clickHover borderRound buffer colorTwo">Next Round</button>
 	</div>
-
 </body>
 
 </html>

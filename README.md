@@ -4,12 +4,3 @@
 
 # To DO:
 * AI
-
-#
-#
-	- game logic complete
-#
-	- add round/game won modal.
-	- finish GUI.
-#
-#
